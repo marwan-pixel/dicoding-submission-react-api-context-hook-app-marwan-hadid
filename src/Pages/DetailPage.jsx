@@ -9,7 +9,7 @@ function DetailPageWrapper() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  return <DetailPage id={Number(id)} navigate={navigate} />;
+  return <DetailPage id={id} navigate={navigate} />;
 }
 
 class DetailPage extends React.Component {
@@ -35,7 +35,7 @@ class DetailPage extends React.Component {
   }
 }
 DetailPage.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 

@@ -47,7 +47,7 @@ class NoteItem extends React.Component {
 }
 
 NoteItem.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
   onFormattedDate: PropTypes.func.isRequired,

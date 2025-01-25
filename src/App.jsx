@@ -7,16 +7,33 @@ import AddNotePage from "./Pages/AddNotePage";
 import ArchivedPage from "./Pages/ArchivedPage";
 import Navigation from "./components/Navigation";
 import { getNotes, addNotes } from "./utils";
+import { useSearchParams } from "react-router-dom";
+import PropTypes from "prop-types";
+
+function NotesAppWrapper() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword") || "";
+
+  function changeSearchParams(newKeyword) {
+    setSearchParams({ keyword: newKeyword });
+  }
+
+  return (
+    <NotesApp defaultKeyword={keyword} keywordChange={changeSearchParams} />
+  );
+}
 
 class NotesApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       notes: getNotes(),
+      keyword: props.defaultKeyword || "",
     };
     this.onArchiveNotesHandler = this.onArchiveNotesHandler.bind(this);
     this.refreshNotes = this.refreshNotes.bind(this);
     this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
+    this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
   }
 
   onAddNotesHandler(note) {
@@ -47,10 +64,25 @@ class NotesApp extends React.Component {
     });
   }
 
+  onKeywordChangeHandler(keyword) {
+    this.setState(() => {
+      return {
+        keyword,
+      };
+    });
+
+    this.props.keywordChange(keyword);
+  }
+
   render() {
-    const activeNotes = this.state.notes.filter((note) => !note.archived);
-    const archivedNotes = this.state.notes.filter((note) => note.archived);
-    console.log(activeNotes);
+    const notes = this.state.notes.filter((note) => {
+      return note.title
+        .toLowerCase()
+        .includes(this.state.keyword.toLowerCase());
+    });
+
+    const activeNotes = notes.filter((note) => !note.archived);
+    const archivedNotes = notes.filter((note) => note.archived);
     return (
       <div className="note-app">
         <header className="note-app__header">
@@ -58,7 +90,6 @@ class NotesApp extends React.Component {
           <Navigation />
         </header>
         <main>
-          {/* <NotesHeader onSearch={this.onSearchHandler} /> */}
           <Routes>
             <Route
               path="/"
@@ -67,6 +98,8 @@ class NotesApp extends React.Component {
                   notes={activeNotes}
                   refreshNotes={this.refreshNotes}
                   onArchive={this.onArchiveNotesHandler}
+                  keyword={this.state.keyword}
+                  keywordChange={this.onKeywordChangeHandler}
                 />
               }
             />
@@ -78,6 +111,8 @@ class NotesApp extends React.Component {
                   notes={archivedNotes}
                   refreshNotes={this.refreshNotes}
                   onArchive={this.onArchiveNotesHandler}
+                  keyword={this.state.keyword}
+                  keywordChange={this.onKeywordChangeHandler}
                 />
               }
             />
@@ -93,4 +128,9 @@ class NotesApp extends React.Component {
   }
 }
 
-export default NotesApp;
+NotesApp.propTypes = {
+  defaultKeyword: PropTypes.string,
+  keywordChange: PropTypes.func.isRequired,
+};
+
+export default NotesAppWrapper;
