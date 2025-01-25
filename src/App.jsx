@@ -6,7 +6,7 @@ import NotFoundPage from "./Pages/NotFoundPage";
 import AddNotePage from "./Pages/AddNotePage";
 import ArchivedPage from "./Pages/ArchivedPage";
 import Navigation from "./components/Navigation";
-import { getNotes, addNotes } from "./utils";
+import { getNotes, addNotes, deleteNotes } from "./utils";
 import { useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -31,8 +31,8 @@ class NotesApp extends React.Component {
       keyword: props.defaultKeyword || "",
     };
     this.onArchiveNotesHandler = this.onArchiveNotesHandler.bind(this);
-    this.refreshNotes = this.refreshNotes.bind(this);
     this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
+    this.onDeleteHandler = this.onDeleteHandler.bind(this);
     this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
   }
 
@@ -41,6 +41,13 @@ class NotesApp extends React.Component {
     this.setState((prevState) => ({
       notes: [...prevState.notes, newNote],
     }));
+  }
+
+  onDeleteHandler(id) {
+    deleteNotes(id);
+    this.setState({
+      notes: getNotes(),
+    });
   }
 
   onArchiveNotesHandler(id) {
@@ -55,12 +62,6 @@ class NotesApp extends React.Component {
         return note;
       });
       return { notes: updateNotes };
-    });
-  }
-
-  refreshNotes() {
-    this.setState({
-      notes: getNotes(),
     });
   }
 
@@ -96,8 +97,8 @@ class NotesApp extends React.Component {
               element={
                 <HomePage
                   notes={activeNotes}
-                  refreshNotes={this.refreshNotes}
                   onArchive={this.onArchiveNotesHandler}
+                  onDelete={this.onDeleteHandler}
                   keyword={this.state.keyword}
                   keywordChange={this.onKeywordChangeHandler}
                 />
@@ -109,8 +110,8 @@ class NotesApp extends React.Component {
               element={
                 <ArchivedPage
                   notes={archivedNotes}
-                  refreshNotes={this.refreshNotes}
                   onArchive={this.onArchiveNotesHandler}
+                  onDelete={this.onDeleteHandler}
                   keyword={this.state.keyword}
                   keywordChange={this.onKeywordChangeHandler}
                 />

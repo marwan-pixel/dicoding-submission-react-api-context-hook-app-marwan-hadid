@@ -1,18 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import NotesBody from "../components/NotesBody";
-import { deleteNotes, showFormattedDate } from "../utils";
+import { showFormattedDate } from "../utils";
 import SearchBar from "../components/SearchBar";
 
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
-    this.onDeleteHandler = this.onDeleteHandler.bind(this);
-  }
-
-  onDeleteHandler(id) {
-    deleteNotes(id);
-    this.props.refreshNotes();
   }
 
   render() {
@@ -24,7 +18,7 @@ class HomePage extends React.Component {
         />
         <NotesBody
           notes={this.props.notes}
-          onDelete={this.onDeleteHandler}
+          onDelete={this.props.onDelete}
           onFormattedDate={showFormattedDate}
           onArchive={this.props.onArchive}
         />
@@ -34,8 +28,8 @@ class HomePage extends React.Component {
 }
 HomePage.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  refreshNotes: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   keyword: PropTypes.string.isRequired,
   keywordChange: PropTypes.func.isRequired,
 };
