@@ -1,28 +1,15 @@
 import React from "react";
-import NotesInput from "./NotesInput";
 import NoteList from "./NoteList";
-import ArchivedList from "./ArchivedList";
+import PropTypes from "prop-types";
 
 class NotesBody extends React.Component {
   render() {
-    const { notes, onDelete, onFormattedDate, onAdd, onArchive } = this.props;
-
-    const activeNotes = notes.filter((note) => !note.archived);
-    // Filter untuk catatan yang sudah diarsipkan
-    const archivedNotes = notes.filter((note) => note.archived);
+    const { notes, onDelete, onFormattedDate, onArchive } = this.props;
     return (
       <div className="note-app__body">
-        <NotesInput onAdd={onAdd} />
-        <h2>Catatan Aktif</h2>
+        <h2>Daftar Catatan</h2>
         <NoteList
-          notes={activeNotes}
-          onDelete={onDelete}
-          onFormattedDate={onFormattedDate}
-          onArchive={onArchive}
-        />
-        <h2>Arsip</h2>
-        <ArchivedList
-          notes={archivedNotes}
+          notes={notes}
           onDelete={onDelete}
           onFormattedDate={onFormattedDate}
           onArchive={onArchive}
@@ -31,5 +18,11 @@ class NotesBody extends React.Component {
     );
   }
 }
+NotesBody.propTypes = {
+  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onFormattedDate: PropTypes.func.isRequired,
+  onArchive: PropTypes.func.isRequired,
+};
 
 export default NotesBody;

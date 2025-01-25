@@ -43,19 +43,20 @@ let notes = [
   },
 ];
 
-function getNotes() {
+function getNotes(id) {
+  if (id !== undefined) {
+    return notes.filter((note) => note.id === id)[0];
+  }
   return notes;
 }
 
 function addNotes(note) {
-  notes = [
-    ...notes,
-    {
-      id: +new Date(),
-      createdAt: showFormattedDate,
-      ...note,
-    },
-  ];
+  const newNote = {
+    id: +new Date(),
+    ...note,
+  };
+  notes = [...notes, newNote];
+  return newNote;
 }
 
 function deleteNotes(id) {
@@ -72,4 +73,4 @@ const showFormattedDate = (date) => {
   return new Date(date).toLocaleDateString("id-ID", options);
 };
 
-export { getNotes, addNotes, deleteNotes };
+export { getNotes, addNotes, deleteNotes, showFormattedDate };

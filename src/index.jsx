@@ -1,6 +1,5 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
-import NotesApp from "./components/NotesApp";
+import NotesApp from "./App";
 import { BrowserRouter } from "react-router-dom";
 // import style
 import "./styles/style.css";

@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class NotesInput extends React.Component {
   constructor(props) {
     super(props);
@@ -7,6 +7,8 @@ class NotesInput extends React.Component {
     this.state = {
       title: "",
       body: "",
+      createdAt: new Date().toISOString(),
+      archived: false,
       maxCharTitle: 50,
     };
 
@@ -27,16 +29,14 @@ class NotesInput extends React.Component {
   }
 
   onBodyChangeEventHandler(event) {
-    this.setState(() => {
-      return {
-        body: event.target.value,
-      };
-    });
+    this.setState({ body: event.target.innerHTML });
   }
 
   onSubmitEventHandler(event) {
     event.preventDefault();
-    this.props.onAdd(this.state);
+    const dataToSend = { ...this.state };
+    delete dataToSend.maxCharTitle;
+    this.props.onAdd(dataToSend);
   }
 
   render() {
@@ -53,18 +53,22 @@ class NotesInput extends React.Component {
           value={this.state.title}
           onChange={this.onTitleChangeEventHandler}
         />
-        <textarea
+        <div
           name="catatan"
-          placeholder="Tuliskan catatanmu di sini..."
+          data-placeholder="Tuliskan catatanmu di sini..."
+          contentEditable
           id="catatan"
           className="note-input__body"
           value={this.state.body}
-          onChange={this.onBodyChangeEventHandler}
-        ></textarea>
+          onInput={this.onBodyChangeEventHandler}
+        />
         <button onClick={this.onSubmitEventHandler}>Buat</button>
       </form>
     );
   }
 }
+NotesInput.propTypes = {
+  onAdd: PropTypes.func.isRequired,
+};
 
 export default NotesInput;
