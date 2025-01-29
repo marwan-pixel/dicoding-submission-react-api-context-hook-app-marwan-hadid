@@ -2,14 +2,12 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import NoteDetail from "../components/NoteDetail";
-import { getNotes, showFormattedDate } from "../utils";
-import { useNavigate } from "react-router-dom";
+import { getNote } from "../utils/api";
 
 function DetailPageWrapper() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  return <DetailPage id={id} navigate={navigate} />;
+  return <DetailPage idNote={id} />;
 }
 
 class DetailPage extends React.Component {
@@ -17,26 +15,49 @@ class DetailPage extends React.Component {
     super(props);
 
     this.state = {
-      note: getNotes(props.id),
+      note: null,
+      loading: true,
     };
   }
 
-  render() {
-    if (!this.state.note) {
-      this.props.navigate("/");
-      return null;
+  async fetchNote() {
+    this.setState({ loading: true });
+    try {
+      const { data } = await getNote(this.props.idNote);
+      this.setState({ note: data });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.setState({ loading: false });
     }
+  }
 
+  componentDidMount() {
+    this.fetchNote();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.idNote !== this.props.idNote) {
+      this.fetchNote();
+    }
+  }
+
+  render() {
     return (
       <section>
-        <NoteDetail {...this.state.note} onFormattedDate={showFormattedDate} />
+        {this.state.loading ? (
+          <div className="notes-app__loading">
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <NoteDetail {...this.state.note} />
+        )}
       </section>
     );
   }
 }
 DetailPage.propTypes = {
-  id: PropTypes.string.isRequired,
-  navigate: PropTypes.func.isRequired,
+  idNote: PropTypes.string.isRequired,
 };
 
 export default DetailPageWrapper;

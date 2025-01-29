@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import NoteContext from "../contexts/NoteContext";
 class NotesInput extends React.Component {
   constructor(props) {
     super(props);
@@ -41,29 +42,43 @@ class NotesInput extends React.Component {
 
   render() {
     return (
-      <form action="" className="note-input">
-        <h2 className="note-input__title">Buat Catatan</h2>
-        <h5 htmlFor="" className="note-input__title__char-limit ">
-          Sisa Karakter: {this.state.maxCharTitle - this.state.title.length}
-        </h5>
-        <input
-          type="text"
-          placeholder="Masukkan judul..."
-          id="judul"
-          value={this.state.title}
-          onChange={this.onTitleChangeEventHandler}
-        />
-        <div
-          name="catatan"
-          data-placeholder="Tuliskan catatanmu di sini..."
-          contentEditable
-          id="catatan"
-          className="note-input__body"
-          value={this.state.body}
-          onInput={this.onBodyChangeEventHandler}
-        />
-        <button onClick={this.onSubmitEventHandler}>Buat</button>
-      </form>
+      <NoteContext.Consumer>
+        {({ locale }) => {
+          return (
+            <form action="" className="note-input">
+              <h2 className="note-input__title">
+                {locale === "id" ? "Buat Catatan" : "Create Note"}
+              </h2>
+              <h5 htmlFor="" className="note-input__title__char-limit ">
+                {locale === "id" ? "Sisa Karakter: " : "Characters Remaining: "}
+                {this.state.maxCharTitle - this.state.title.length}
+              </h5>
+              <input
+                type="text"
+                placeholder={
+                  locale === "id" ? "Masukkan judul..." : "Insert the title..."
+                }
+                id="judul"
+                value={this.state.title}
+                onChange={this.onTitleChangeEventHandler}
+              />
+              <div
+                name="catatan"
+                data-placeholder="Tuliskan catatanmu di sini..."
+                contentEditable
+                id="catatan"
+                className="note-input__body"
+                value={this.state.body}
+                onInput={this.onBodyChangeEventHandler}
+              />
+              <button onClick={this.onSubmitEventHandler}>
+                {" "}
+                {locale === "id" ? "Buat" : "Create"}
+              </button>
+            </form>
+          );
+        }}
+      </NoteContext.Consumer>
     );
   }
 }

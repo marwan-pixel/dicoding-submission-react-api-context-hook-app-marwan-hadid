@@ -1,37 +1,35 @@
-import React from "react";
-import PropTypes from "prop-types";
 import NotesBody from "../components/NotesBody";
-import { showFormattedDate } from "../utils";
 import SearchBar from "../components/SearchBar";
+import { getArchivedNotes, unArchiveNote, deleteNote } from "../utils/api";
+import useNotes from "../hooks/useNotes";
 
-class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <section>
-        <SearchBar
-          keyword={this.props.keyword}
-          keywordChange={this.props.keywordChange}
-        />
-        <NotesBody
-          notes={this.props.notes}
-          onDelete={this.props.onDelete}
-          onFormattedDate={showFormattedDate}
-          onArchive={this.props.onArchive}
-        />
-      </section>
-    );
-  }
+function ArchivedPage() {
+  const {
+    notes,
+    keyword,
+    loading,
+    onKeywordChangeHandler,
+    onDeleteHandler,
+    onArchiveHandler,
+  } = useNotes(getArchivedNotes, deleteNote, unArchiveNote);
+  return (
+    <section>
+      {loading ? (
+        <div className="notes-app__loading">
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <>
+          <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
+          <NotesBody
+            notes={notes}
+            onDelete={onDeleteHandler}
+            onArchive={onArchiveHandler}
+          />
+        </>
+      )}
+    </section>
+  );
 }
-HomePage.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onArchive: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  keyword: PropTypes.string.isRequired,
-  keywordChange: PropTypes.func.isRequired,
-};
 
-export default HomePage;
+export default ArchivedPage;

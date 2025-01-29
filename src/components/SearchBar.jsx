@@ -1,16 +1,25 @@
 import PropTypes from "prop-types";
+import NoteContext from "../contexts/NoteContext";
 
 function SearchBar({ keyword, keywordChange }) {
   return (
-    <div className="note-app__header">
-      <input
-        type="text"
-        className="note-search"
-        placeholder="Cari catatan..."
-        value={keyword}
-        onChange={(event) => keywordChange(event.target.value)}
-      />
-    </div>
+    <NoteContext.Consumer>
+      {({ locale }) => {
+        return (
+          <div className="note-app__header">
+            <input
+              type="text"
+              className="note-search"
+              placeholder={
+                locale === "id" ? "Cari catatan..." : "Search notes..."
+              }
+              value={keyword}
+              onChange={(event) => keywordChange(event.target.value)}
+            />
+          </div>
+        );
+      }}
+    </NoteContext.Consumer>
   );
 }
 

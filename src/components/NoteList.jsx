@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import NoteItem from "./NoteItem";
+import NoteContext from "../contexts/NoteContext";
 
 class NoteList extends React.Component {
   render() {
-    const { notes, onDelete, onFormattedDate, onArchive } = this.props;
+    const { notes, onDelete, onArchive } = this.props;
     if (notes.length > 0) {
       return (
         <div className="notes-list">
@@ -15,13 +16,22 @@ class NoteList extends React.Component {
               onDelete={onDelete}
               {...note}
               onArchive={onArchive}
-              onFormattedDate={onFormattedDate}
             />
           ))}
         </div>
       );
     } else {
-      return <h3 className="notes-list__empty-message">Tidak Ada catatan</h3>;
+      return (
+        <NoteContext.Consumer>
+          {({ locale }) => {
+            return (
+              <h3 className="notes-list__empty-message">
+                {locale === "id" ? "Tidak Ada catatan" : "Notes are empty"}
+              </h3>
+            );
+          }}
+        </NoteContext.Consumer>
+      );
     }
   }
 }
@@ -36,7 +46,6 @@ NoteList.propTypes = {
     })
   ).isRequired,
   onDelete: PropTypes.func.isRequired,
-  onFormattedDate: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
 };
 export default NoteList;

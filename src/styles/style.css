@@ -1,3 +1,11 @@
+[data-theme="light"] {
+  --font-color: black;
+  --background-color: white;
+}
+[data-theme="dark"] {
+  --font-color: white;
+  --background-color: #0d0d0d;
+}
 * {
   padding: 0;
   margin: 0;
@@ -6,8 +14,8 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: white;
-  color: rgb(0, 0, 0);
+  background-color: var(--background-color);
+  color: var(--font-color);
 }
 
 input,
@@ -24,7 +32,7 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: #afafaf;
-  font-weight: bold;
+  font-weight: 100;
 }
 .note-app {
   max-width: 1000px;
@@ -35,19 +43,29 @@ textarea::placeholder {
 .note-app__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 4px 16px;
-  border-bottom: 1px solid #aaa;
-}
-
-.note-app__header h1 {
-  display: flex;
-  align-items: center;
   padding: 32px 0;
 }
 
+.note-app__header h1 {
+  font-weight: normal;
+  font-size: 32px;
+  flex: 1;
+}
+
 .note-app__header input.note-search {
+  border-bottom: 1px solid #aaa;
   width: 100%;
+}
+
+.notes-app__loading {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+}
+
+.navigation ul {
+  display: flex;
+  align-items: center;
 }
 
 .navigation ul li {
@@ -57,7 +75,22 @@ textarea::placeholder {
 
 .navigation ul li a {
   font-size: 28px;
-  color: black;
+  color: var(--font-color);
+}
+
+.navigation ul li button {
+  background-color: transparent;
+  font-family: "Inter", sans-serif;
+  border: 0;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navigation ul li button {
+  color: var(--font-color);
 }
 
 .note-app__body {
@@ -85,7 +118,7 @@ textarea::placeholder {
 .note-app__body h2 {
   /* font-weight: normal; */
   margin: 16px 0;
-  color: black;
+  color: var(--font-color);
 }
 
 .note-input {
@@ -154,7 +187,8 @@ textarea::placeholder {
 }
 
 .note-item__content {
-  padding: 12px;
+  padding: 15px;
+  width: 250;
   flex: 1;
 }
 
@@ -163,7 +197,7 @@ textarea::placeholder {
   overflow: hidden;
   white-space: nowrap;
   margin-bottom: 4px;
-  color: black;
+  color: var(--font-color);
   font-weight: bold;
   font-size: 25px;
 }
@@ -174,7 +208,7 @@ textarea::placeholder {
   white-space: nowrap;
   margin-bottom: 4px;
 
-  color: black;
+  color: var(--font-color);
 }
 
 .note-detail__date {
@@ -191,7 +225,7 @@ textarea::placeholder {
 
 .note-detail__body {
   font-size: 15px;
-  color: black;
+  color: var(--font-color);
 }
 
 .note-item__body {
@@ -239,6 +273,43 @@ textarea::placeholder {
 
 .note-item__detail-link:hover {
   background-color: #1f509a;
+}
+
+.login-page h2,
+.register-page h2 {
+  font-weight: normal;
+}
+
+.login-input,
+.register-input,
+.contact-input {
+  margin-top: 16px;
+}
+
+.login-input input,
+.register-input input,
+.contact-input input {
+  display: block;
+  padding: 16px;
+  width: 100%;
+  margin: 8px 0;
+  font-size: 20px;
+  background-color: transparent;
+  border: 2px dashed black;
+  border-radius: 8px;
+}
+
+.login-input button,
+.register-input button,
+.contact-input button {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 24px;
+  background-color: #1f509a;
+  color: white;
+  border-radius: 8px;
+  margin: 16px 0;
 }
 
 @media only screen and (min-width: 500px) {

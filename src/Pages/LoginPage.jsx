@@ -1,0 +1,28 @@
+import { Link } from "react-router-dom";
+import LoginInput from "../Components/LoginInput";
+import { login } from "../utils/api";
+import PropTypes from "prop-types";
+
+function LoginPage({ loginSuccess }) {
+  async function onLogin({ email, password }) {
+    const { error, data } = await login({ email, password });
+    if (!error) {
+      loginSuccess(data);
+    }
+  }
+
+  return (
+    <section className="login-page">
+      <LoginInput login={onLogin} />
+      <p>
+        Belum punya akun? <Link to="/register">Daftar di sini</Link>
+      </p>
+    </section>
+  );
+}
+
+LoginPage.propTypes = {
+  loginSuccess: PropTypes.func.isRequired,
+};
+
+export default LoginPage;

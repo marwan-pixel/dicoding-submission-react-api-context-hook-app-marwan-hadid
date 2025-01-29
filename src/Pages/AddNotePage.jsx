@@ -1,11 +1,12 @@
 import NotesInput from "../components/NotesInput";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { addNote } from "../utils/api";
 
-function AddNotePage({ onAdd }) {
+function AddNotePage() {
   const navigate = useNavigate();
-  function onAddNoteHandler(note) {
-    onAdd(note);
+
+  async function onAddNoteHandler(note) {
+    await addNote(note);
     navigate("/");
   }
 
@@ -15,8 +16,5 @@ function AddNotePage({ onAdd }) {
     </section>
   );
 }
-AddNotePage.propTypes = {
-  onAdd: PropTypes.func.isRequired,
-};
 
 export default AddNotePage;
