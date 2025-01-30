@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import RegisterInput from "../Components/RegisterInput";
+import RegisterInput from "../components/RegisterInput";
 import { register } from "../utils/api";
 function RegisterPage() {
   const navigate = useNavigate();
