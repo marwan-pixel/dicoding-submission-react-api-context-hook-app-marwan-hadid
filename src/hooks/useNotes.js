@@ -23,7 +23,7 @@ function useNotes(getNotes, deleteNote, archiveNote) {
     }
 
     fetchNotesData();
-  }, []);
+  }, [getNotes]);
 
   function onKeywordChangeHandler(keyword) {
     setKeyword(keyword);
