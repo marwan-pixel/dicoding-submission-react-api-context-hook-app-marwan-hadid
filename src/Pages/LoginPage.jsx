@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LoginInput from "../Components/LoginInput";
+import LoginInput from "../components/LoginInput";
 import { login } from "../utils/api";
 import PropTypes from "prop-types";
 
